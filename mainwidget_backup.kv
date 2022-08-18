@@ -1,0 +1,231 @@
+#:kivy 1.11.1
+<MainWidget>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgb: 0.5,0.5,0.5
+            Rectangle:
+                size: self.size
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.1)
+            spacing: 10
+            canvas:
+                Color:
+                    rgb: 0,0,0
+                Rectangle:
+                    size: self.size
+            Image:
+                source: 'imgs/eng_eletrica.png'
+                size_hint:(0.15,1)
+                haling: 'center'
+                valign: 'top'
+
+
+            Label:
+                text: 'SUPERVISORIO TRABALHO FINAL'
+                font_size: 25
+                size_hint: (0.8,1)
+                halign: 'center'
+                valign: 'middle'
+                markup: True
+                color: 0,0,0,1
+                
+            BoxLayout:
+                orientation:'vertical'
+                size_hint:(0.3,1)
+                Button:
+                    text: 'Sincronizar horário'
+                    font_size: 15
+                    markup: True
+                    on_release:
+                        root.atualizar_hora()
+                Label:
+                    id:txt_hora
+                    text: ""
+
+            BoxLayout:
+                orientation:'vertical'
+                size_hint_x: None
+                self_hint: (0.2,1)
+                Button:
+                    text: 'Conexao'
+                    on_release: root._modbusPopup.open()
+                Button:
+                    text: 'ScanTime'
+                    on_release: root._scanPopup.open()
+            Image:
+                size_hint: (0.1,1)
+                id: img_com
+                source: 'imgs/desconectado.png'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            BoxLayout:
+                orientation:'vertical'
+                size_hint: (0.65, 1)
+                canvas:
+                    Color:
+                        rgb: 1,1,1
+                    Rectangle:
+                        size: self.size
+
+                Image:
+                    source: 'imgs/modelo2.png'
+                    size_hint: (1,0.85)
+                    valign: 'top'
+                BoxLayout:
+                    canvas:
+                        Color:
+                            rgb: 0,0,0
+                        Rectangle:
+                            size: self.size
+                    spacing: 25
+                    orientation:'horizontal'
+                    size_hint: (1, 0.1)
+                    valign: 'middle'
+                    BoxLayout:
+                        size_hint: (0.2, 1)
+                        orientation:'vertical'
+                        Label:
+                            text: 'Solenoide 1'
+                            markup: True
+                            font_size: 15
+                        Button:
+                            id: btn_sol1
+                            background_normal:'imgs/botao_off.PNG'
+                            backgroung_down: 'imgs/botao_off.PNG'
+                            on_release:
+                                root.atualiza_botao(self)
+                    BoxLayout:
+                        size_hint: (0.2, 1)
+                        orientation:'vertical'
+                        Label:
+                            text: 'Solenoide 2'
+                            markup: True
+                            font_size: 15
+                        Button:
+                            id: btn_sol2
+                            background_normal:'imgs/botao_off.PNG'
+                            backgroung_down: 'imgs/botao_off.PNG'
+                            on_release:
+                                root.atualiza_botao(self)
+                            
+                    BoxLayout:
+                        size_hint: (0.2, 1)
+                        orientation:'vertical'
+                        Label:
+                            text: 'Solenoide 3'
+                            markup: True
+                            font_size: 15
+                        Button:
+                            id: btn_sol3
+                            background_normal:'imgs/botao_off.PNG'
+                            backgroung_down: 'imgs/botao_off.PNG'
+                            size: self.size
+                            on_release:
+                                root.atualiza_botao(self)
+                                
+                            
+                    BoxLayout:
+                        size_hint: (0.2, 1)
+                        orientation:'vertical'
+                        Label:
+                            text: 'Motor'
+                            markup: True
+                            font_size: 15
+                        Button:
+                            id: motor
+                            background_normal:'imgs/botao_off.PNG'
+                            backgroung_down: 'imgs/botao_off.PNG'
+                            size: self.size
+                            on_release:
+                                root.atualiza_botao(self)
+                    
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: (0.35,1)
+                Button:
+                    text: 'Entradas digitais'
+                    size_hint:(1,0.1)
+                GridLayout:
+                    cols: 2
+                    rows: 6
+                    Label:
+                        text: 'ESTADO MOTOR'
+                    Image:
+                        id:led_motor
+                        source: 'imgs\led_vermelho.png'
+                        size: self.size
+                    Label:
+                        text: 'NIVEL_H'
+                    Image:
+                        id:led_nivelh
+                        source: 'imgs\led_vermelho.png'
+                        size:self.size
+                    Label:
+                        text: 'NIVEL_L'
+                    Image:
+                        id: led_nivell
+                        source: 'imgs\led_vermelho.png'
+                    Label:
+                        text: 'SOLENOIDE 1'
+                    Image:
+                        id: led_s1
+                        source: 'imgs\led_vermelho.png'
+                    Label:
+                        text: 'SOLENOIDE 2'
+                    Image:
+                        id: led_s2
+                        source: 'imgs\led_vermelho.png'
+                    Label:
+                        text: 'SOLENOIDE 3'
+                    Image:
+                        id: led_s3
+                        source: 'imgs\led_vermelho.png'
+
+                    
+                Button:
+                    text: 'Entradas analogicas'
+                    size_hint:(1,0.1)
+
+
+                Image:
+                    source: 'imgs\fundo_an.png'
+                    
+            
+                    
+                
+        
+
+                    
+                    
+                    
+                    
+
+
+
+            
+                
+                
+
+
+
+
+
+
+<TempLabel@Label>:
+    text: '-.-'
+    font_size: 20
+    bold: True
+    halign: 'center'
+    color: 1,0,0,1
+
+
+
+
+            
+
+        

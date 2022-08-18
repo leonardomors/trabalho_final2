@@ -1,0 +1,332 @@
+#:kivy 1.11.1
+
+<ModbusPopup>:
+    title: "Conexão"
+    size_hint_y: None
+    size_hint_x: 0.4
+    height: 200
+    BoxLayout:
+        id: layout
+        orientation: 'vertical'
+        GridLayout:
+            cols: 2
+            rows: 2
+            Label:
+                text: "IP"
+                font_size: 14
+            TextInput:
+                id: txt_ip
+                text: "127.0.0.1"
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+            Label:
+                text: "Porta"
+                font_size: 14
+            TextInput:
+                id: txt_port
+                text: "503"
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+        BoxLayout:
+            orientation:'horizontal'
+            Button:
+                size_hint_y: None
+                height: 40
+                text: 'Conectar'
+                on_release:
+                    
+                    app.root.conectar(txt_ip.text, int(txt_port.text))
+                    
+                    
+            Button:
+                size_hint_y: None
+                height: 40
+                text: 'FECHAR'
+                on_release:
+                    root.dismiss()
+
+<ScanPopup>:
+    title: "SCAN TIME"
+    size_hint_y: None
+    size_hint_x: 0.4
+    height: 150
+    BoxLayout:
+        orientation:'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                id:lbl_scan
+                text: 'Scan time [ms]: '
+                font_size: 14
+            TextInput:
+                id: ti_scan
+                text: ''
+                valign: 'middle'
+                halign: 'center'
+        Button:
+            text:'ATUALIZAR'
+            on_release:
+                
+
+<MotorPopup>:
+    title: "INFORMAÇÕES DO MOTOR"
+    halign: 'center'
+    size_hint: (0.8, 0.8)
+    GridLayout:
+        cols: 2
+        rows: 7
+
+        Label:
+            text: "Frequencia desejada:" 
+            font_size: 15
+        TextInput:
+            id: freq_des
+            text: "60"
+            font_size: 15
+        Label:
+            text: "Ligar / Desligar motor"
+            font_size: 15
+        BoxLayout:
+            orientation:'horizontal'
+            Button:
+                id: op_motor
+                text: 'LIGAR'
+                font_size: 15
+                on_release:
+                    app.root.ligar_motor(int(freq_des.text))
+            Button:
+                id: desop_motor
+                text: 'DESLIGAR'
+                font_size: 15
+                on_release:
+                    app.root.desligar_motor()
+
+        Label:
+            text: "Estado do motor: "
+        Label:
+            id:estado_mot
+            text: "-.-"
+        Label:
+            text: "Tempo de partida: "
+        Label:
+            id:t_part
+            text: "-.-"
+        Label:
+            text: "Frequência medida: "
+        Label:
+            id:freq_motor
+            text: '-.-'
+        Label:
+            text: "Rotação"
+        Label:
+            id:rotacao
+            text: "-.-"
+        Label:
+            text: "Temperatura no estator"
+        Label:
+            id:temp_estator
+            text: ''
+
+<InversorPopup>:
+    title: "INFORMAÇÕES DO INVERSOR"
+    halign: 'center'
+    size_hint: (0.8, 0.8)
+    GridLayout:
+        cols: 2
+        rows: 3
+        Label:
+            text: 'Tensão na rede: '
+        Label:
+            id:tensao
+            text: '-.-'
+        Label:
+            text: 'Potência de entrada: '
+        Label:
+            id:pot_entrada
+            text: '-.-'
+        Label:
+            text: 'Corrente: '
+        Label:
+            id:corrente
+            text: '-.-'
+
+<DataGraphPopup>:
+    title: "GRÁFICO"
+    halign: 'center'
+    BoxLayout:
+        orientation:'vertical'
+        TimeSeriesGraph:
+            id: graph
+            xlabel: 'Horário'
+            ylabel: 'Nivel de agua'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 50
+            y_grid_label: True
+            x_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+            ymax: 1000
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.05)
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: (0.5, 1)
+                Label:
+                    text: 'Número de pontos'
+                    size_hint: (0.25,1)
+                    font_size: 15
+                CheckBoxDataGraph:
+                    id: mp20
+                    on_kv_post:
+                        self.ids.label.text = '20'
+                        self.ids.checkbox.group = 'cv_group'
+                        self.ids.checkbox.active = True
+                CheckBoxDataGraph:
+                    id: mp50
+                    on_kv_post:
+                        self.ids.label.text = '50'
+                        self.ids.checkbox.group = 'cv_group'
+                CheckBoxDataGraph:
+                    id: mp100
+                    on_kv_post:
+                        self.ids.label.text = '100'
+                        self.ids.checkbox.group = 'cv_group'
+            Button:
+                text:"Fechar"
+                size_hint: (0.2,1)
+                on_release:
+                    root.dismiss()
+                
+
+<CheckBoxDataGraph>:
+    orientation: 'horizontal'
+    size_hint: (0.1,1)
+    CheckBox:
+        id: checkbox
+        on_active: app.root._dataGraph.ids.graph.setMaxPoints(int(label.text), 0) if app.root is not None else None
+    Label:
+        id:label
+
+
+<HistGraphPopup>:
+    title: "HISTÓRICO DE INFORMAÇÕES"
+    halign: 'center'
+    BoxLayout:
+        orientation:'vertical'
+        TimeSeriesGraph:
+            id: graph
+            xlabel: 'Horário'
+            ylabel: 'Medição'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 50
+            y_grid_label: True
+            x_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+            ymax: 1000
+
+        BoxLayout:
+            id: sensores
+            orientation:'horizontal'
+            size_hint: (1, 0.1)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (1, 0.1)
+            Label:
+                text: 'Timestamp inicial \r\n [size=12] (DD/MM/AAAA HH:MM:SS) [/size]'
+                halign: 'center'
+                markup: True
+            TextInput:
+                id: txt_init_time
+                size_hint: (1, 0.8)
+                haling: 'center'
+                valign: 'middle'
+                multiline: False
+            
+            Label:
+                text: 'Timestamp final \r\n [size=12] (DD/MM/AAAA HH:MM:SS) [/size]'
+                halign: 'center'
+                markup: True
+
+            TextInput:
+                id: txt_final_time
+                size_hint: (1, 0.8)
+                haling: 'center'
+                valign: 'middle'
+                multiline: False
+
+            Button:
+                text:"Fechar"
+                size_hint: (0.2,1)
+                on_release:
+                    root.dismiss()
+
+<CheckBoxHistGraph>:
+    orientation: 'horizontal'
+    size_hint: (0.05,1)
+    CheckBox:
+        id: checkbox
+        on_active: app.root.getDataDB()
+    Label:
+        id:label
+        font_size: 12
+        bold: True
+
+<ControlePopup>:
+    orientation: 'vertical'
+    size_hint: (0.8, 0.8)
+    tittle: 'Configuração do Controle automático'
+    halign: 'center'
+    GridLayout:
+        cols: 2
+        rows: 3
+        halign: 'center'
+        valign: 'middle'
+        Label:
+            text: 'SetPoint: '
+        TextInput:
+            id: setpoint
+            halign: 'center'
+            valign: 'middle'
+            text: '950'
+        Label:
+            text: 'Histerese [%]: '
+        TextInput:
+            id: histerese
+            halign: 'center'
+            valign: 'middle'
+            text: '100'
+        Button:
+            text:'Ativar'
+            on_release: app.root.ativarControleAutomatico()
+        Button:
+            text: 'Desativar'
+            on_release: app.root.desativarControleAutomatico()
+            
+
+
+
+
+
+
+
+
+
+
+
+        
+                    

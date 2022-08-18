@@ -1,0 +1,160 @@
+#:kivy 1.11.1
+<MainWidget>:
+    canvas:
+        Color:
+            rgb: 0.5,0.5,0.5
+        Rectangle:
+            size: self.size
+    BoxLayout:
+        orientation:'vertical'
+
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.1)
+            Image:
+                source: 'imgs/eng_eletrica.png'
+                size_hint:(0.15,1)
+                haling: 'center'
+                valign: 'top'
+
+
+            Label:
+                text: 'SUPERVISÓRIO TRABALHO FINAL'
+                font_size: 25
+                size_hint: (0.7,1)
+                halign: 'center'
+                valign: 'middle'
+                markup: True
+                color: 0,0,0,1
+
+            BoxLayout:
+                orientation:'vertical'
+                size_hint_x: None
+                self_hint: (0.30,1)
+                Button:
+                    text: 'Conexão'
+                    on_release: root._modbusPopup.open()
+                Button:
+                    text: 'ScanTime'
+                    on_release: root._scanPopup.open()
+                Button:
+                    text:'Controle de nivel'
+                    font_size: 12
+                    on_release: root._controlePopup.open()
+
+            Image:
+                size_hint: (0.1,1)
+                id: img_com
+                source: 'imgs/desconectado.png'
+        FloatLayout:
+            orientation: 'horizontal'
+            size_hint: (1,0.9)
+            Image:
+                id: fundo
+                source: 'imgs/f1.png'
+                pos_hint: {'top':1,'right':1}
+                size: self.size
+            
+            Button:
+                id: s1
+                background_normal: 'imgs/s1.png'
+                on_release: 
+                    root.atualiza_botao(self, 801)
+
+                size_hint: (None, None)
+                width: 60
+                height: 59
+                pos_hint:{'top':0.71,'right':0.168}
+
+            Button:
+                id: s2
+                background_normal: 'imgs/s1.png'
+                on_release: 
+                    root.atualiza_botao(self, 802)
+                size_hint: (None, None)
+                width: 60
+                height: 59
+                pos_hint:{'top':0.55,'right':0.168}
+
+            Button:
+                id: s3
+                background_normal: 'imgs/s1.png'
+                on_release: 
+                    root.atualiza_botao(self, 803)
+                size_hint: (None, None)
+                width: 60
+                height: 59
+                pos_hint:{'top':0.41,'right':0.168}
+
+            Button:
+                id: motor
+                background_normal: 'imgs/motor.png'
+                size_hint: (None, None)
+                width: 150
+                height: 96
+                pos_hint:{'top':0.705,'right':0.90}
+                on_release:
+                    root._motorPopup.open()
+
+            Label:
+                id: lb_agua
+                size_hint: (None, None)
+                size: (tanque.size[0]*0.83, tanque.size[1]*0.9)
+                pos_hint: {'x':0.35,'y':0.35}
+                canvas:
+                    Color:
+                        rgb: 0.5686,0.8275,0.8824
+                    Rectangle:
+                        size: self.size
+                        pos: (self.pos[0]+self.width*0.1,self.pos[1])
+                        
+            Image:
+                id: tanque
+                source: 'imgs/tanque.png'
+                size_hint: 0.295,0.295
+                pos_hint: lb_agua.pos_hint
+            
+            Label:
+                id:nv_agua
+                font_size: 30
+                text: '-.-'
+                pos_hint: {'x': 0,'y':0.2}
+                color: (0.5686,0.8275,0.8824,1)
+                
+
+            Button:
+                id: inversor
+                text: 'INVERSOR'
+                size_hint: (None, None)
+                width: 150
+                height: 96
+                pos_hint:{'top':0.3,'right':0.90}
+                on_release:
+                    root._inversorPopup.open()
+
+            Button:
+                id:graph
+                size_hint: (None, None)
+                size: (0.65*62, 0.65*58)
+                background_normal: 'imgs/graph_icon.jpg'
+                background_down: 'imgs/graph_icon.jpg'
+                pos_hint: {'x': 0.01, 'y': 0.08}
+                on_release:
+                    root._dataGraph.open()
+
+            Button:
+                text:'Dados Históricos'
+                pos_hint: {'x':0.1, 'y': 0.1}
+                size_hint: (None, None)
+                size: (0.65*62, 0.65*58)
+                on_release:
+                    root._hgraph.open()
+
+
+
+
+                
+        
+
+
+        
