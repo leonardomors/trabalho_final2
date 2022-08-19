@@ -3,6 +3,7 @@ from kivy.uix.label import Label
 from kivy_garden.graph import LinePlot
 from kivy.uix.boxlayout import BoxLayout
 from timeseriesgraph import TimeSeriesGraph
+import random
 
 class ModbusPopup(Popup):
     """
@@ -56,7 +57,7 @@ class HistGraphPopup(Popup):
         for key, value in kwargs.get('tags').items():
             cb = CheckBoxHistGraph()
             cb.ids.label.text = key
-            cb.ids.label.color = (0.5686,0.8275,0.8824,1)
+            cb.ids.label.color = (random.random(),random.random(),random.random(),1)
             cb.id = key
             self.ids.sensores.add_widget(cb)
 

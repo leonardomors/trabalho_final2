@@ -31,7 +31,7 @@ class MyApp(App):
             'Solenoide 2': {'addr': 802, 'type': 'coils', 'mult': 'na'},
             'Solenoide 3': {'addr': 803, 'type': 'coils', 'mult': 'na'}
         },
-        db_path = "C:\\Users\\leomo\\Pictures\\trabalho_final 11-08\\trabalho 18-08\\trabalho3-main\\db\\scada.db" 
+        db_path = "/home/juliane/Documentos/trabalho_final2-main/db/scada.db" 
         )
         return self._widget
 

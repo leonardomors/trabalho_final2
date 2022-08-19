@@ -58,10 +58,6 @@ class MainWidget(BoxLayout):
         self._measn = self._meas
         self._controlePopup = ControlePopup()
         self._setgraphPopup = SetGraphPopup()
-        self._objeto = 1.0
-
-        
-
 
     def conectar(self, ip, port):
         """
@@ -286,13 +282,6 @@ class MainWidget(BoxLayout):
         self._controle_automatico = False
         self._modbusClient.write_single_coil(800, False)
       
-
-    # def atualiza_status_motor(self):
-    #     if self._meas['values']['estado_mot'] == True:
-    #         self.ids.motor.background_normal = 'imgs/motor_ligado.png'
-    #     elif self._meas['values']['estado_mot'] == False:
-    #         self.ids.motor.background_normal = 'imgs/motor.png'
-
     
 
 
