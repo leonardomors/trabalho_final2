@@ -11,12 +11,11 @@
         BoxLayout:
             orientation:'horizontal'
             size_hint: (1,0.1)
+
             Image:
                 source: 'imgs/eng_eletrica.png'
-                size_hint:(0.15,1)
-                haling: 'center'
-                valign: 'top'
-
+                size_hint:(0.24,1)
+                pos_hint:{'x':0,'y':0}
 
             Label:
                 text: 'SUPERVISÓRIO TRABALHO FINAL'
@@ -26,11 +25,10 @@
                 valign: 'middle'
                 markup: True
                 color: 0,0,0,1
-
             BoxLayout:
                 orientation:'vertical'
                 size_hint_x: None
-                self_hint: (0.30,1)
+                self_hint: (0.50,1)
                 Button:
                     text: 'Conexão'
                     on_release: root._modbusPopup.open()
@@ -92,15 +90,15 @@
                 size_hint: (None, None)
                 width: 150
                 height: 96
-                pos_hint:{'top':0.705,'right':0.90}
+                pos_hint:{'top':0.705,'right':0.92}
                 on_release:
                     root._motorPopup.open()
 
             Label:
                 id: lb_agua
                 size_hint: (None, None)
-                size: (tanque.size[0]*0.83, tanque.size[1]*0.9)
-                pos_hint: {'x':0.35,'y':0.35}
+                size: (tanque.size[0]*0.89, tanque.size[1]*0.86)
+                pos_hint: {'x':0.356,'y':0.40}
                 canvas:
                     Color:
                         rgb: 0.5686,0.8275,0.8824
@@ -111,24 +109,29 @@
             Image:
                 id: tanque
                 source: 'imgs/tanque.png'
-                size_hint: 0.295,0.295
+                size_hint: 0.27,0.27
                 pos_hint: lb_agua.pos_hint
             
             Label:
                 id:nv_agua
                 font_size: 30
                 text: '-.-'
-                pos_hint: {'x': 0,'y':0.2}
-                color: (0.5686,0.8275,0.8824,1)
-                
+                pos_hint: {'x': 0,'y':0.25}
+                color: (0.5,0.5,0.5,1)
+
+            Image:
+                id: blank
+                source: 'imgs/blank.png'
+                size_hint: 0.27,0.27
+                pos_hint: {'x':0.356,'y':0.26}   
 
             Button:
                 id: inversor
-                text: 'INVERSOR'
+                background_normal: 'imgs/inversor.png'
                 size_hint: (None, None)
-                width: 150
-                height: 96
-                pos_hint:{'top':0.3,'right':0.90}
+                width: 80
+                height: 78.5
+                pos_hint:{'top':0.39,'right':0.87}
                 on_release:
                     root._inversorPopup.open()
 
@@ -137,16 +140,14 @@
                 size_hint: (None, None)
                 size: (0.65*62, 0.65*58)
                 background_normal: 'imgs/graph_icon.jpg'
-                background_down: 'imgs/graph_icon.jpg'
                 pos_hint: {'x': 0.01, 'y': 0.08}
                 on_release:
                     root._dataGraph.open()
 
             Button:
                 text:'Dados Históricos'
-                pos_hint: {'x':0.1, 'y': 0.1}
-                size_hint: (None, None)
-                size: (0.65*62, 0.65*58)
+                pos_hint: {'x':0.85, 'y': 0.075}
+                size_hint: (0.15, 0.06)
                 on_release:
                     root._hgraph.open()
 

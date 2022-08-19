@@ -6,7 +6,7 @@ from timeseriesgraph import TimeSeriesGraph
 
 class ModbusPopup(Popup):
     """
-    Popup da tela de conexção (modbus)
+    Popup da tela de conexão (modbus)
     """
     def __init__(self, server_ip, port, **kwargs):
         super().__init__(*kwargs)
@@ -33,6 +33,10 @@ class MotorPopup(Popup):
         super().__init__()
 
 class InversorPopup(Popup):
+    def __init__(self):
+        super().__init__()
+
+class SetGraphPopup(Popup):
     def __init__(self):
         super().__init__()
 

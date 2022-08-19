@@ -10,6 +10,7 @@ class BDHandler():
         """
         construtor
         """
+        
         self._dbpath = dbpath
         self._tablename = tablename
         self._con = sqlite3.connect(self._dbpath, check_same_thread=False) # A 3 flag serve para possibilitar que o banco rode em threads distintas, uma vez que em um thread ele é criado/inserido, e em outra thread é realizada a consulta

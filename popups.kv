@@ -39,11 +39,10 @@
                     
                     app.root.conectar(txt_ip.text, int(txt_port.text))
                     
-                    
             Button:
                 size_hint_y: None
                 height: 40
-                text: 'FECHAR'
+                text: 'Fechar'
                 on_release:
                     root.dismiss()
 
@@ -54,8 +53,9 @@
     height: 150
     BoxLayout:
         orientation:'vertical'
-        BoxLayout:
-            orientation: 'horizontal'
+        GridLayout:
+            cols: 2
+            rows: 2
             Label:
                 id:lbl_scan
                 text: 'Scan time [ms]: '
@@ -65,92 +65,117 @@
                 text: ''
                 valign: 'middle'
                 halign: 'center'
-        Button:
-            text:'ATUALIZAR'
-            on_release:
+            Button:
+                text:'Atualizar'
+                size_hint: (0.7,0.7)
+                on_release: root.dismiss()
+            Button:
+                text:'Fechar'
+                size_hint: (0.7,0.7)
+                on_release: root.dismiss()
+        
                 
 
 <MotorPopup>:
     title: "INFORMAÇÕES DO MOTOR"
     halign: 'center'
     size_hint: (0.8, 0.8)
-    GridLayout:
-        cols: 2
-        rows: 7
+    BoxLayout:
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            rows: 9
 
-        Label:
-            text: "Frequencia desejada:" 
-            font_size: 15
-        TextInput:
-            id: freq_des
-            text: "60"
-            font_size: 15
-        Label:
-            text: "Ligar / Desligar motor"
-            font_size: 15
-        BoxLayout:
-            orientation:'horizontal'
-            Button:
-                id: op_motor
-                text: 'LIGAR'
+            Label:
+                text: "Frequência desejada:" 
                 font_size: 15
-                on_release:
-                    app.root.ligar_motor(int(freq_des.text))
-            Button:
-                id: desop_motor
-                text: 'DESLIGAR'
+            TextInput:
+                id: freq_des
+                text: "60"
+                halign: 'center'
+                valign: 'center'
                 font_size: 15
-                on_release:
-                    app.root.desligar_motor()
+            Label:
+                text: "Ligar / Desligar motor"
+                font_size: 15
+            BoxLayout:
+                orientation:'horizontal'
+                Button:
+                    id: op_motor
+                    text: 'Ligar'
+                    font_size: 15
+                    on_release:
+                        app.root.ligar_motor(int(freq_des.text))
+                Button:
+                    id: desop_motor
+                    text: 'Desligar'
+                    font_size: 15
+                    on_release:
+                        app.root.desligar_motor()
 
-        Label:
-            text: "Estado do motor: "
-        Label:
-            id:estado_mot
-            text: "-.-"
-        Label:
-            text: "Tempo de partida: "
-        Label:
-            id:t_part
-            text: "-.-"
-        Label:
-            text: "Frequência medida: "
-        Label:
-            id:freq_motor
-            text: '-.-'
-        Label:
-            text: "Rotação"
-        Label:
-            id:rotacao
-            text: "-.-"
-        Label:
-            text: "Temperatura no estator"
-        Label:
-            id:temp_estator
-            text: ''
+            
+            Label:
+                text: "Tempo de partida: "
+            Label:
+                id:t_part
+                text: "-.-"
+            Label:
+                text: "Frequência medida: "
+            Label:
+                id:freq_motor
+                text: '-.-'
+            Label:
+                text: "Rotação"
+            Label:
+                id:rotacao
+                text: "-.-"
+            Label:
+                text: "Temperatura no estator"
+            Label:
+                id:temp_estator
+                text: '-.-'
+            Label:
+                text: 'Vazão de entrada'
+            Label:
+                id: vz_entrada
+                text: '-.-'
+        Button:
+            text:'Fechar'
+            size_hint: (0.2,0.1)
+            pos_hint: {'x':0.8,'y':0.5}
+            on_release: root.dismiss()
 
 <InversorPopup>:
     title: "INFORMAÇÕES DO INVERSOR"
     halign: 'center'
     size_hint: (0.8, 0.8)
-    GridLayout:
-        cols: 2
-        rows: 3
-        Label:
-            text: 'Tensão na rede: '
-        Label:
-            id:tensao
-            text: '-.-'
-        Label:
-            text: 'Potência de entrada: '
-        Label:
-            id:pot_entrada
-            text: '-.-'
-        Label:
-            text: 'Corrente: '
-        Label:
-            id:corrente
-            text: '-.-'
+    BoxLayout:
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            rows: 3
+            Label:
+                text: 'Tensão na rede: '
+            Label:
+                id:tensao
+                text: '-.-'
+            Label:
+                text: 'Potência de entrada: '
+            Label:
+                id:pot_entrada
+                text: '-.-'
+            Label:
+                text: 'Corrente: '
+            Label:
+                id:corrente
+                text: '-.-'
+        Button:
+            text:'Fechar'
+            size_hint: (0.2,0.1)
+            pos_hint: {'x':0.8,'y':0.5}
+            on_release: root.dismiss()
+           
+        
 
 <DataGraphPopup>:
     title: "GRÁFICO"
@@ -272,8 +297,7 @@
             Button:
                 text:"Fechar"
                 size_hint: (0.2,1)
-                on_release:
-                    root.dismiss()
+                on_release: root.dismiss()
 
 <CheckBoxHistGraph>:
     orientation: 'horizontal'
@@ -288,34 +312,55 @@
 
 <ControlePopup>:
     orientation: 'vertical'
-    size_hint: (0.8, 0.8)
-    tittle: 'Configuração do Controle automático'
+    size_hint: (0.8, 0.6)
+    title: 'Configuração do Controle automático'
     halign: 'center'
-    GridLayout:
-        cols: 2
-        rows: 3
-        halign: 'center'
-        valign: 'middle'
-        Label:
-            text: 'SetPoint: '
-        TextInput:
-            id: setpoint
+    BoxLayout:
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            rows: 3
             halign: 'center'
             valign: 'middle'
-            text: '950'
-        Label:
-            text: 'Histerese [%]: '
-        TextInput:
-            id: histerese
-            halign: 'center'
-            valign: 'middle'
-            text: '100'
-        Button:
-            text:'Ativar'
-            on_release: app.root.ativarControleAutomatico()
-        Button:
-            text: 'Desativar'
-            on_release: app.root.desativarControleAutomatico()
+            Label:
+                text: 'SetPoint: '
+            TextInput:
+                id: setpoint
+                halign: 'center'
+                valign: 'middle'
+                text: '950'
+            Label:
+                text: 'Histerese: '
+            TextInput:
+                id: histerese
+                halign: 'center'
+                valign: 'middle'
+                text: '100'
+            Label:
+                text: 'Controle automatico: '
+            Label:
+                id: estado_controle
+                text: 'Desativado!'
+
+        BoxLayout:
+            orientation:'horizontal'
+            Button:
+                text:'Ativar'
+                size_hint: (0.3,0.3)
+                on_release: 
+                    app.root.ativarControleAutomatico()
+                    estado_controle.text  = 'Ativado'
+
+            Button:
+                text: 'Desativar'
+                size_hint: (0.3,0.3)
+                on_release: 
+                    app.root.desativarControleAutomatico()
+                    estado_controle.text  = 'Desativado'
+            Button:
+                text:"Fechar"
+                size_hint: (0.3,0.3)
+                on_release: root.dismiss()
             
 
 

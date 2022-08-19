@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from pyModbusTCP.client import ModbusClient
 from threading import Thread
 from datetime import datetime
-from popups import ModbusPopup, ScanPopup, MotorPopup, InversorPopup, DataGraphPopup, HistGraphPopup, ControlePopup
+from popups import ModbusPopup, ScanPopup, MotorPopup, InversorPopup, DataGraphPopup, HistGraphPopup, ControlePopup, SetGraphPopup
 from timeseriesgraph import TimeSeriesGraph
 from bdhandler import BDHandler
 from kivy_garden.graph import LinePlot
@@ -37,7 +37,7 @@ class MainWidget(BoxLayout):
         self._modbusClient = ModbusClient(self._ip, self._port)
         self._meas = {}
         self._measn = {}
-        self._tagsn = {}
+        
         self._meas['timestamp'] = None
         self._meas['values'] = {}
         for key, value in kwargs.get('modbus_addrs').items():
@@ -57,6 +57,8 @@ class MainWidget(BoxLayout):
         self._measn['values'] = {}
         self._measn = self._meas
         self._controlePopup = ControlePopup()
+        self._setgraphPopup = SetGraphPopup()
+        self._objeto = 1.0
 
         
 
@@ -93,12 +95,10 @@ class MainWidget(BoxLayout):
             while self._updateWidgt:
                 self.readData()
                 self._bd.insertData(self._measn)
-                # print('timestamp, ' + ','.join(self._meas['values'].keys()))
-                # print(str(self._meas['timestamp']) + ', ' +','.join(str(self._meas['values'][k]) for k in self._meas['values'].keys()))
-                # print(self._tags)
                 self.controleNivel()
-                # print(self._measn)
                 self.updateGUI()
+                
+                
                 sleep(self._scantime/1000)
 
         except  Exception as e:
@@ -127,6 +127,7 @@ class MainWidget(BoxLayout):
                 self._meas['values'][key] = (self._modbusClient.read_input_registers(self._tags[key]['info']['addr'], 1)[0])/ self._tags[key]['info']['mult']
             elif self._tags[key]['info']['type'] == 'discrete_inputs':
                 self._meas['values'][key] = self._modbusClient.read_discrete_inputs(self._tags[key]['info']['addr'], 1)[0]
+        self._estado_mot = self._modbusClient.read_coils(800, 1)[0]
         
         
 
@@ -139,7 +140,7 @@ class MainWidget(BoxLayout):
         Método que atualiza as interfaces gráficas em geral
         """
         ## Atualização do Popup do motor:
-        key_motor = ['estado_mot', 't_part', 'freq_motor', 'rotacao', 'temp_estator']
+        key_motor = ['estado_mot', 't_part', 'freq_motor', 'rotacao', 'temp_estator', 'vz_entrada']
         for key, value in self._meas['values'].items():
             if key in key_motor:
                 self._motorPopup.ids[key].text = str(value)
@@ -158,6 +159,14 @@ class MainWidget(BoxLayout):
         ## Atualizacao do grafico
         self._dataGraph.ids.graph.updateGraph((self._meas['timestamp'], self._meas['values']['nivel']),0)
 
+        ## Atualizacao estado motor:
+        if self._estado_mot == False:
+            self.ids.motor.background_normal = 'imgs/motor.png'
+        elif self._estado_mot == True:
+            self.ids.motor.background_normal = 'imgs/motor_ligado.png'
+        
+
+
 
     def operar_motor(self, freq_des):
         if self._meas['values']['estado_mot'] == False:
@@ -172,6 +181,7 @@ class MainWidget(BoxLayout):
 
         self._modbusClient.write_single_register(799, freq_des)
         self._modbusClient.write_single_coil(800, True)
+        
 
     def desligar_motor(self):
         self._modbusClient.write_single_coil(800, False)
@@ -252,31 +262,38 @@ class MainWidget(BoxLayout):
         x = setpoint + histerese
         
 
-        if self._controle_automatico:
-            print('Controle automatico ativado! ')
-            
+        if self._controle_automatico:            
             
             if self._meas['values']['nivel'] < setpoint:
                 self._modbusClient.write_single_coil(800, True)
-                print('Motor ligado!')
-                if self._meas['values']['nivel'] >= x:
-                    self._modbusClient.write_single_coil(800, False)
-                    print('histerese atingida, desligando o motor')
-                    self._controle_automatico = False
+
+                
+
+            if self._meas['values']['nivel'] > x:
+                self._modbusClient.write_single_coil(800, False)
+                
+                
+             
 
         else:
             pass
 
     def ativarControleAutomatico(self):
         self._controle_automatico = True
+        
 
     def desativarControleAutomatico(self):
         self._controle_automatico = False
         self._modbusClient.write_single_coil(800, False)
-        
+      
 
+    # def atualiza_status_motor(self):
+    #     if self._meas['values']['estado_mot'] == True:
+    #         self.ids.motor.background_normal = 'imgs/motor_ligado.png'
+    #     elif self._meas['values']['estado_mot'] == False:
+    #         self.ids.motor.background_normal = 'imgs/motor.png'
 
-
+    
 
 
         
