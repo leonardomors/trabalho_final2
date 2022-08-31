@@ -32,15 +32,15 @@ class MyApp(App):
             'Solenoide 3': {'addr': 803, 'type': 'coils', 'mult': 'na'}
         },
         db_path = "/home/juliane/Documentos/trabalho_final2-main/db/scada.db" 
-        )
-        return self._widget
+        ) ## O aplicativo (MainWidget) gerado dentro do construtor
+        return self._widget 
 
     
     def on_stop(self):
         """
         Metodo executado no encerramento da aplicação
         """
-        self._widget.stopRefresh()
+        self._widget.stopRefresh() ## Garante o encerramento da aplicação
 
         
         
